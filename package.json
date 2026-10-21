@@ -1,0 +1,12 @@
+{
+  "name": "al-dia",
+  "private": true,
+  "description": "Herramientas de desarrollo de Al día. La app no usa nada de esto: solo las pruebas.",
+  "scripts": {
+    "test": "playwright test",
+    "test:instalar": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}

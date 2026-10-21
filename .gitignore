@@ -1,0 +1,11 @@
+# Configuración local del editor / Claude
+.claude/
+
+# Respaldos exportados: nunca subir datos personales
+al-dia-*.csv
+al-dia-respaldo-*.json
+
+# Herramientas de prueba (solo desarrollo)
+node_modules/
+test-results/
+playwright-report/

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>Al día</title>
+  <meta name="description" content="Tu check-in diario: entrenamiento, alimentación y lo que quieras agregar.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F6F5">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101413">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Al día">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="update-bar" id="update-bar" role="status" hidden>
+    <span>Hay una versión nueva de Al día</span>
+    <button class="btn btn-primario" type="button" data-action="actualizar">Actualizar</button>
+  </div>
+
+  <main class="app">
+    <!-- Mi día -->
+    <section class="view" id="view-dia" aria-labelledby="dia-titulo">
+      <header class="dia-head">
+        <div class="dia-nav">
+          <button class="icon-btn" type="button" data-action="dia-prev" aria-label="Día anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button class="hoy-pill" type="button" data-action="dia-hoy" id="btn-dia-hoy" hidden>Volver a hoy</button>
+          <button class="icon-btn" type="button" data-action="dia-sig" aria-label="Día siguiente">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <p class="dia-semana" id="dia-semana"></p>
+        <h1 class="dia-titulo" id="dia-titulo"></h1>
+        <div class="tira" id="dia-tira" aria-hidden="true"></div>
+        <p class="dia-resumen" id="dia-resumen" role="status"></p>
+      </header>
+
+      <button class="btn-checkin" type="button" data-action="checkin" id="btn-checkin">Hacer el check-in</button>
+
+      <div id="dia-lista"></div>
+
+      <section class="nota-dia" id="dia-nota" aria-label="Nota del día"></section>
+    </section>
+
+    <!-- Semana -->
+    <section class="view" id="view-semana" aria-labelledby="sem-titulo" hidden>
+      <header class="sem-head">
+        <div class="sem-top">
+          <h1 class="sem-titulo" id="sem-titulo">Semana</h1>
+          <button class="hoy-pill" type="button" data-action="sem-hoy" id="btn-sem-hoy">Volver a esta semana</button>
+        </div>
+        <div class="sem-nav">
+          <button class="icon-btn" type="button" data-action="sem-prev" aria-label="Semana anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <p class="sem-rango" id="sem-rango" aria-live="polite"></p>
+          <button class="icon-btn" type="button" data-action="sem-sig" aria-label="Semana siguiente">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="filtros" id="sem-filtros" role="group" aria-label="Filtrar por categoría"></div>
+      <div class="tabla-wrap" id="sem-tabla"></div>
+      <p class="leyenda">
+        <span><i class="c c-si"></i>Sí</span>
+        <span><i class="c c-no"></i>No</span>
+        <span><i class="c c-pend"></i>Sin responder</span>
+        <span><i class="c c-futuro"></i>Planificada</span>
+        <span>Toca un día para completarlo.</span>
+      </p>
+    </section>
+
+    <!-- Mis actividades -->
+    <section class="view" id="view-actividades" aria-labelledby="act-titulo" hidden>
+      <header class="sem-top">
+        <h1 class="sem-titulo" id="act-titulo">Mis actividades</h1>
+        <button class="hoy-pill" type="button" data-action="ordenar" id="btn-ordenar" aria-pressed="false">Ordenar</button>
+      </header>
+      <div class="act-botones">
+        <button class="btn btn-primario" type="button" data-action="nueva-act">Nueva actividad</button>
+        <button class="btn" type="button" data-action="nueva-cat">Nueva categoría</button>
+      </div>
+      <div id="act-lista"></div>
+    </section>
+
+    <!-- Avance, datos e instalación -->
+    <section class="view" id="view-avance" aria-labelledby="avance-titulo" hidden>
+      <h1 class="sem-titulo avance-titulo" id="avance-titulo">Tu avance</h1>
+      <p class="racha" id="racha"></p>
+      <div class="dias14" id="dias14"></div>
+
+      <h2 class="seccion-titulo">Cumplimiento</h2>
+      <div class="segmentos periodo" role="group" aria-label="Período">
+        <button type="button" data-action="periodo" data-dias="7" aria-pressed="true">7 días</button>
+        <button type="button" data-action="periodo" data-dias="30" aria-pressed="false">30 días</button>
+        <button type="button" data-action="periodo" data-dias="0" aria-pressed="false">Todo</button>
+      </div>
+      <ul class="ck-cats avance-cats" id="avance-cats"></ul>
+
+      <h2 class="seccion-titulo">Tus datos</h2>
+      <p class="seccion-texto" id="respaldo-texto"></p>
+      <div class="datos-botones">
+        <button class="btn" type="button" data-action="exportar-csv">Descargar CSV</button>
+        <button class="btn" type="button" data-action="exportar-json">Descargar respaldo</button>
+        <button class="btn" type="button" data-action="importar-json">Restaurar respaldo</button>
+      </div>
+      <input type="file" id="archivo-respaldo" accept="application/json,.json" hidden>
+
+      <section class="instalar" id="instalar" aria-labelledby="instalar-titulo" hidden>
+        <h2 class="seccion-titulo" id="instalar-titulo">Instalar en el celular</h2>
+        <p class="seccion-texto">Queda en tu pantalla de inicio como una app y funciona sin internet.</p>
+        <button class="btn btn-primario" type="button" data-action="instalar" id="btn-instalar" hidden>Instalar Al día</button>
+        <div id="instalar-pasos">
+          <p class="paso"><b>Android (Chrome):</b> toca el menú ⋮ y elige «Instalar app» o «Agregar a la pantalla principal».</p>
+          <p class="paso"><b>iPhone (Safari):</b> toca Compartir y elige «Agregar a inicio».</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <button class="fab" id="btn-tarea" type="button" data-action="nueva-tarea">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    Tarea
+  </button>
+
+  <nav class="tabbar" aria-label="Secciones">
+    <a href="#dia" data-tab="dia">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M8 13l2.5 2.5L16 10"/></svg>
+      Mi día
+    </a>
+    <a href="#semana" data-tab="semana">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16M9 4v16"/></svg>
+      Semana
+    </a>
+    <a href="#actividades" data-tab="actividades">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>
+      Actividades
+    </a>
+    <a href="#avance" data-tab="avance">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg>
+      Avance
+    </a>
+  </nav>
+
+  <!-- Hoja para crear o editar una actividad o categoría -->
+  <div class="velo" id="velo" data-action="hoja-cerrar" hidden></div>
+  <div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-titulo" hidden>
+    <div class="hoja-top">
+      <h2 class="hoja-titulo" id="hoja-titulo" tabindex="-1"></h2>
+      <button class="icon-btn" type="button" data-action="hoja-cerrar" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form class="hoja-form" id="hoja-form" novalidate autocomplete="off"></form>
+  </div>
+
+  <!-- Confirmación dentro de la app -->
+  <div class="confirmar" id="confirmar" role="alertdialog" aria-modal="true" aria-labelledby="conf-titulo" aria-describedby="conf-texto" hidden>
+    <div class="confirmar-caja">
+      <h2 class="confirmar-titulo" id="conf-titulo"></h2>
+      <p class="confirmar-texto" id="conf-texto"></p>
+      <div class="fila-botones">
+        <button class="btn" type="button" data-action="conf-no">Cancelar</button>
+        <button class="btn btn-peligro" type="button" data-action="conf-si" id="conf-si"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Check-in por preguntas -->
+  <div class="checkin" id="checkin" role="dialog" aria-modal="true" aria-labelledby="ck-pregunta" hidden>
+    <div class="ck-top">
+      <button class="icon-btn" type="button" data-action="ck-cerrar" aria-label="Cerrar check-in">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="ck-progreso" aria-hidden="true"><div class="ck-progreso-fill" id="ck-fill"></div></div>
+      <span class="ck-cuenta" id="ck-cuenta"></span>
+    </div>
+    <div class="ck-cuerpo" id="ck-cuerpo"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

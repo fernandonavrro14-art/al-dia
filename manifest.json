@@ -1,0 +1,33 @@
+{
+  "id": "./",
+  "name": "Al día",
+  "short_name": "Al día",
+  "description": "Tu check-in diario: entrenamiento, alimentación y lo que quieras agregar.",
+  "lang": "es-CL",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F6F5",
+  "theme_color": "#F4F6F5",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Hacer el check-in",
+      "short_name": "Check-in",
+      "url": "./?abrir=checkin",
+      "icons": [{ "src": "icons/atajo-checkin-96.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Agregar tarea",
+      "short_name": "Tarea",
+      "url": "./?abrir=tarea",
+      "icons": [{ "src": "icons/atajo-tarea-96.png", "sizes": "96x96", "type": "image/png" }]
+    }
+  ]
+}
